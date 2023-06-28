@@ -1,3 +1,3 @@
-import { initializeBtns } from './modules/btns.js';
+import { initializeBtns } from './config/config.js';
 
 initializeBtns();
