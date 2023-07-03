@@ -5,6 +5,25 @@ function initializeBtns() {
   container.id = 'tab-container';
   document.body.appendChild(container);
 
+  
+  var accountContainer = document.createElement('div');
+  accountContainer.classList.add('account-container', 'position-right');
+
+  var accountLink = document.createElement('a');
+  accountLink.href = '../../account.html';
+  accountLink.innerHTML = 'My Account';
+  accountLink.classList.add('account-link'); 
+
+  var accountImage = document.createElement('img');
+  accountImage.src = '../../img/white-right-arrow.png'; 
+  accountImage.alt = 'My Account';
+  accountImage.classList.add('right-arrow'); 
+
+  accountContainer.appendChild(accountImage);
+  accountContainer.appendChild(accountLink);
+
+  container.insertBefore(accountContainer, container.firstChild);
+
   var eventCategories = ['Music', 'Sports', 'Business', 'Food', 'Art'];
 
   var handleCategoryClick = function (category) {
@@ -37,5 +56,6 @@ function initializeBtns() {
 
   handleCategoryClick('music');
 }
+
 
 export { initializeBtns};

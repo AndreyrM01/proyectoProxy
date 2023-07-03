@@ -1,8 +1,10 @@
 import { dateInfo } from './dateData.js';
 import { priceFunction } from './price.js';
 import { eventProxy } from './api.js';
+import { addToLocalStorage, getLocalStorageItems, clearLocalStorageOnReload } from '../storage/localStorage.js';
 
 const eventApi = new eventProxy();
+let activeCategory = 'all'; // Categoría activa inicial
 
 function showEvents(eventsData) {
   var gridContainer = document.getElementById('grid-container');
@@ -23,7 +25,7 @@ function showEvents(eventsData) {
     gridContainer.innerHTML = '';
   }
 
-  eventsData.forEach((event) => {
+  eventsData.forEach((event, index) => {
     var eventDiv = document.createElement('div');
     eventDiv.classList.add('event');
 
@@ -31,11 +33,15 @@ function showEvents(eventsData) {
     imageElement.classList.add('event_image');
     imageElement.src = event.image;
 
-    var imageContainer = document.createElement('div'); // Contenedor de la imagen y círculo blanco
+    var imageContainer = document.createElement('div');
     imageContainer.classList.add('image-container');
 
     var imageElement2 = document.createElement('a');
-    imageElement2.href = '#'; // Agrega el enlace deseado aquí
+    imageElement2.href = '#';
+    imageElement2.id = 'imageElement2_' + index;
+    imageElement2.addEventListener('click', function () {
+      addToLocalStorage(event, 'image_click');
+    });
 
     var imageIcon = document.createElement('img');
     imageIcon.classList.add('favorite_img');
@@ -46,52 +52,55 @@ function showEvents(eventsData) {
     eventDiv.appendChild(imageElement);
     eventDiv.appendChild(imageContainer);
 
-    var titleElement = document.createElement('p');
+    var titleElement = document.createElement('h2');
     titleElement.classList.add('event_title');
     titleElement.textContent = event.title;
+    eventDiv.appendChild(titleElement);
 
     var dateElement = document.createElement('p');
+    dateElement.classList.add('event_date');
     dateElement.textContent = dateInfo(event.date);
+    eventDiv.appendChild(dateElement);
 
     var priceElement = document.createElement('p');
+    priceElement.classList.add('event_price');
     priceElement.textContent = priceFunction(event.price);
-
-    var locationElement = document.createElement('p');
-    locationElement.textContent = 'Location: ' + event.location.city + ', ' + event.location.state + ', ' + event.location.address;
-
-    eventDiv.appendChild(titleElement);
-    eventDiv.appendChild(dateElement);
     eventDiv.appendChild(priceElement);
-    eventDiv.appendChild(locationElement);
 
-    var buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container');
-    
-    var button1 = document.createElement('button'); 
+    var button1 = document.createElement('button');
     button1.textContent = 'Interest';
     button1.classList.add('custom-button', 'interest_btn');
-    button1.addEventListener('click', function () {
-      // Lógica para el botón 1
-    });
-    
-    var button2 = document.createElement('button'); 
+    button1.id = 'button1_' + index;
+
+    var button2 = document.createElement('button');
     button2.textContent = 'Going!';
     button2.classList.add('custom-button', 'going_btn');
-    button2.addEventListener('click', function () {
-      // Lógica para el botón 2
-    });
-    
-    buttonContainer.appendChild(button1);
-    buttonContainer.appendChild(button2);
-    eventDiv.appendChild(buttonContainer);
-    
+    button2.id = 'button2_' + index;
+
+    eventDiv.appendChild(button1);
+    eventDiv.appendChild(button2);
+
+    addButtonClickListener(button1, event, 'interest', 'Item from interest');
+    addButtonClickListener(button2, event, 'going', 'Item from going');
 
     gridContainer.appendChild(eventDiv);
   });
 }
 
+function addButtonClickListener(button, event, actionType, storageMessage) {
+  button.addEventListener('click', function () {
+    addToLocalStorage(event, actionType);
+    if (actionType === 'favorite') {
+      console.log('Item added from favorite');
+    } else {
+      console.log(storageMessage);
+    }
+  });
+}
+
 async function handleClick(category) {
   try {
+    activeCategory = category; // Actualizar la categoría activa
     const eventsData = await eventApi.getEventsByCategory(category);
     console.log('Events:', eventsData);
     showEvents(eventsData);
@@ -100,4 +109,11 @@ async function handleClick(category) {
   }
 }
 
-export {handleClick, showEvents};
+const storedEvents = getLocalStorageItems();
+console.log('Stored Events:', storedEvents);
+
+window.addEventListener('beforeunload', clearLocalStorageOnReload);
+
+export { handleClick, showEvents };
+
+

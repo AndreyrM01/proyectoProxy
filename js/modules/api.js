@@ -29,7 +29,7 @@ class eventProxy {
   }
 
   async getEventsByCategory(category) {
-    return proxyCache[category];
+    return await proxyCache[category];
   }
 
   getAllCategories() {
@@ -44,5 +44,3 @@ class eventProxy {
 }
 
 export { eventProxy };
-
-

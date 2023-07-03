@@ -115,3 +115,38 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+
+.account-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.position-right{
+  position: absolute;
+  left: 1100px;
+}
+
+.position-left{
+  position: absolute;
+  right: 1200px;
+}
+
+.account-link{
+  text-decoration: none;
+  color: #fff;
+}
+
+.back-to-event{
+  text-decoration: none;
+  color: #fff;
+}
+
+.right-arrow{
+  display: flex;
+  position: relative;
+  left: 126px;
+}
+.left-arrow{
+  margin-right: 5px;
+}
