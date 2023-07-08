@@ -4,36 +4,89 @@ const state = {
   going: [],
 };
 
-const prueba = {
+const stateInfo = {
   getdata(value) {
     return [...state[value]];
   },
   addEvent(value, event) {
-    state[value].push(event);
-    if (value === 'interested') {
-      state.going = state.going.filter((element) => element.id !== event.id);
+    if (state[value] && Array.isArray(state[value])) {
+      state[value].push(event);
+      if (value === 'interested') {
+        state.going = state.going.filter((element) => element.id !== event.id);
+      } else if (value === 'image_click') {
+      } else {
+        state.interested = state.interested.filter((element) => element.id !== event.id);
+      }
+      this.saveState();
     } else {
-      state.interested = state.interested.filter((element) => element.id !== event.id);
+      console.error(`Invalid value '${value}' or state property not found.`);
     }
+  },
+  
+  getLocalState() {
+    const localState = JSON.parse(localStorage.getItem("state"));
+    if (localState) {
+      state.favorites = localState.favorites || [];
+      state.interested = localState.interested || [];
+      state.going = localState.going || [];
+      this.saveState();
+    }
+  },
+  removeGoingEvent(event) {
+    state.going = state.going.filter((element) => element.id !== event.id);
+    this.saveState();
+  },
+  removeInterestedEvent(event) {
+    state.interested = state.interested.filter((element) => element.id !== event.id);
+    this.saveState();
+  },
+  removeEvent(category, event) {
+    this.getLocalState();
+    state[category] = state[category].filter((element) => element.id !== event.id);
+    this.saveState();
+  },
+  saveState() {
+    localStorage.setItem("state", JSON.stringify(state));
+  },
+  setState(newState) {
+    state.favorites = newState.favorites || [];
+    state.interested = newState.interested || [];
+    state.going = newState.going || [];
+    this.saveState();
   },
 };
 
-export {prueba};
+stateInfo.getLocalState();
 
+const stateImmutable = Object.freeze(stateInfo);
 
+import { getLocalStorageItems } from "../storage/localStorage.js";
 
+const favoritesTab = document.getElementById('favorites-tab');
+const interestedTab = document.getElementById('interest-tab');
+const goingTab = document.getElementById('going-tab');
 
+function displayItems() {
+  const container = document.getElementById('container');
+  if (container !== null) {
+    const storedItems = getLocalStorageItems('yourLocalStorageKey');
+    let html = '';
+    storedItems.forEach((item) => {
+      for (const key in item) {
+        if (Object.hasOwnProperty.call(item, key)) {
+          html += `<div>${key}: ${item[key]}</div>`;
+        }
+      }
+    });
+    container.innerHTML = html;
+  }
+}
 
+// Create a container element
+const container = document.createElement('div');
+container.id = 'container';
+document.body.appendChild(container);
 
+displayItems();
 
-
-
-
-
-
-
-
-// // // stringify convierte un objeto o valor de JavaScript en una cadena de texto JSON
-// // // condition ? exprIfTrue : exprIfFalse
-// // //The conditional (ternary) operator is the only JavaScript operator that takes three operands: a condition followed by a question mark (?), then an expression to execute if the condition is truthy followed by a colon (:), and finally the expression to execute if the condition is falsy.
-// // //La condición es una expresión que se evalúa como verdadera o falsa. Si la condición es verdadera, se devuelve el valorSiCierto. Si la condición es falsa, se devuelve el valorSiFalso.
+export { stateImmutable };
