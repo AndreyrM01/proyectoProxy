@@ -27,7 +27,6 @@ function initializeBtns() {
   var eventCategories = ['Music', 'Sports', 'Business', 'Food', 'Art'];
 
   var handleCategoryClick = function (category) {
-    console.log('Categoría seleccionada: ' + category);
     var buttons = container.getElementsByClassName('tab-button');
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].classList.remove('default-tab-button');

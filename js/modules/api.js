@@ -5,7 +5,6 @@ const cache = {};
 const proxyCache = new Proxy(cache, {
   get: (obj, category) => {
     if (obj[category]) {
-      console.log('Data obtained from cache.');
       return obj[category];
     } else {
       const url = `${apiUrl}${category}`;

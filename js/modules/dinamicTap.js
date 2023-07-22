@@ -88,7 +88,6 @@ async function handleClick(category) {
   try {
     activeCategory = category;
     const eventsData = await eventApi.getEventsByCategory(category);
-    console.log('Events:', eventsData);
     showEvents(eventsData);
     localStorage.setItem(category, JSON.stringify(eventsData));
   } catch (error) {
@@ -97,7 +96,6 @@ async function handleClick(category) {
 }
 
 const storedFavorites = getLocalStorageItems('favorites');
-console.log('Stored favorite events:', storedFavorites);
 
 
 export { handleClick, showEvents };

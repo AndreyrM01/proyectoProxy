@@ -29,9 +29,7 @@ function accountTabsGenerator() {
   const tabNames = [];
 
   const handleCategoryClick = (category) => {
-    console.log('Categoría seleccionada: ' + category);
     const events = JSON.parse(localStorage.getItem(category.toLowerCase()));
-    console.log(events);
     const buttons = container.getElementsByClassName('tab-button');
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].classList.remove('default-tab-button');
