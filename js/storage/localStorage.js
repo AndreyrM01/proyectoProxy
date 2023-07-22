@@ -34,4 +34,4 @@ function clearLocalStorageOnReload() {
   }
 }
 
-export { addToLocalStorage, getLocalStorageItems, clearLocalStorageOnReload };
+export { addToLocalStorage, getLocalStorageItems};

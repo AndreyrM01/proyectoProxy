@@ -11,7 +11,7 @@ function initializeBtns() {
 
   var accountLink = document.createElement('a');
   accountLink.href = '../../account.html';
-  accountLink.innerHTML = 'My Account';
+  accountLink.textContent = 'My Account';
   accountLink.classList.add('account-link'); 
 
   var accountImage = document.createElement('img');

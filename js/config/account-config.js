@@ -1,4 +1,7 @@
-function accountTabsGenerator(eventsData) {
+import { eventProxy } from '../modules/api.js';
+import { showEvents } from '../modules/dinamicTap.js'
+
+function accountTabsGenerator() {
   const container = document.createElement('div');
   container.id = 'tab-container';
   document.body.appendChild(container);
@@ -21,18 +24,21 @@ function accountTabsGenerator(eventsData) {
 
   container.insertBefore(accountContainer, container.firstChild);
 
-  const eventCategories = ['Favorite', 'Interest', 'Going', 'Calendar'];
+  const eventCategories = ['Favorite', 'Interested', 'Going', 'Calendar'];
   const buttons = [];
   const tabNames = [];
 
   const handleCategoryClick = (category) => {
     console.log('Categoría seleccionada: ' + category);
+    const events = JSON.parse(localStorage.getItem(category.toLowerCase()));
+    console.log(events);
     const buttons = container.getElementsByClassName('tab-button');
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].classList.remove('default-tab-button');
     }
     const selectedButton = document.getElementById(category);
     selectedButton.classList.add('default-tab-button');
+    showEvents(events);
   };
 
   eventCategories.forEach((category) => {
@@ -40,10 +46,12 @@ function accountTabsGenerator(eventsData) {
     button.id = category.toLowerCase();
     button.innerHTML = category;
     button.addEventListener('click', () => {
-      handleCategoryClick(category.toLowerCase());
       if (category.toLowerCase() === 'calendar') {
         calendarContainer.classList.remove('hidden');
+        var gridContainer = document.getElementById('grid-container');
+        gridContainer.innerHTML = '';
       } else {
+        handleCategoryClick(category.toLowerCase());
         calendarContainer.classList.add('hidden');
       }
     });

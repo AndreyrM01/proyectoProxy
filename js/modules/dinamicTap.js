@@ -1,7 +1,8 @@
 import { dateInfo } from '../modules/dateData.js';
 import { priceFunction } from '../modules/price.js';
 import { eventProxy } from '../modules/api.js';
-import { addToLocalStorage, getLocalStorageItems, clearLocalStorageOnReload } from '../storage/localStorage.js';
+import { getLocalStorageItems } from '../storage/localStorage.js';
+import { goingBtn, interestBtn, favoriteBtn} from './handleBtns.js';
 
 const eventApi = new eventProxy();
 let activeCategory = 'all'; 
@@ -25,14 +26,6 @@ function showEvents(eventsData) {
     gridContainer.innerHTML = '';
   }
 
-  function addButtonClickListener(button, event, actionType, storageMessage) {
-    button.addEventListener('click', function () {
-      const key = actionType + '_' + event.id;
-      addToLocalStorage(key, event); 
-      console.log(storageMessage);
-    });
-  }
-
   eventsData.forEach((event, index) => {
     var eventDiv = document.createElement('div');
     eventDiv.classList.add('event');
@@ -43,27 +36,14 @@ function showEvents(eventsData) {
 
     var imageContainer = document.createElement('div');
     imageContainer.classList.add('image-container');
-
-    var imageElement2 = document.createElement('button');
-    imageElement2.id = 'imageElement2_' + index;
+    eventDiv.appendChild(imageElement);
     
     var imageIcon = document.createElement('img');
-    imageIcon.classList.add('favorite_img');
+    imageIcon.classList.add('favorite_img', event.id);
     imageIcon.src = '../img/corazon.png';
+    imageIcon.addEventListener('click', favoriteBtn);
     
-    imageElement2.appendChild(imageIcon);
-    imageContainer.appendChild(imageElement2);
-    eventDiv.appendChild(imageElement);
-    eventDiv.appendChild(imageContainer);
-    
-    imageElement2.addEventListener('click', function () {
-      addToLocalStorage('favorites', event);
-      console.log('Item added to Favorites');
-    });
-    
-    imageElement2.appendChild(imageIcon);
-    imageContainer.appendChild(imageElement2);
-    eventDiv.appendChild(imageElement);
+    imageContainer.appendChild(imageIcon);
     eventDiv.appendChild(imageContainer);
 
     var titleElement = document.createElement('h2');
@@ -86,20 +66,20 @@ function showEvents(eventsData) {
 
     var button1 = document.createElement('button');
     button1.textContent = 'Interest';
-    button1.classList.add('custom-button', 'interest_btn');
+    button1.classList.add('custom-button', 'interest_btn', event.id);
     button1.id = 'button1_' + index;
+    button1.addEventListener('click', interestBtn)
 
     var button2 = document.createElement('button');
     button2.textContent = 'Going';
-    button2.classList.add('custom-button', 'going_btn');
+    button2.classList.add('custom-button', 'going_btn', event.id);
     button2.id = 'button2_' + index;
+    button2.addEventListener('click', goingBtn)
 
     buttonsContainer.appendChild(button1);
     buttonsContainer.appendChild(button2);
     eventDiv.appendChild(buttonsContainer);
 
-    addButtonClickListener(button1, event, 'interested_' + index, 'Item added to Interest');
-    addButtonClickListener(button2, event, 'going_' + index, 'Item added to Going');
     gridContainer.appendChild(eventDiv);
   });
 }
@@ -110,6 +90,7 @@ async function handleClick(category) {
     const eventsData = await eventApi.getEventsByCategory(category);
     console.log('Events:', eventsData);
     showEvents(eventsData);
+    localStorage.setItem(category, JSON.stringify(eventsData));
   } catch (error) {
     console.error(error);
   }
@@ -118,6 +99,5 @@ async function handleClick(category) {
 const storedFavorites = getLocalStorageItems('favorites');
 console.log('Stored favorite events:', storedFavorites);
 
-window.addEventListener('beforeunload', clearLocalStorageOnReload);
 
 export { handleClick, showEvents };
