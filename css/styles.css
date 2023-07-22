@@ -178,6 +178,8 @@ body {
 .empty-cell {
   background-color: transparent;
   border: 1px solid #000;
+  height: 7.4rem;
+  border-radius: 10px;
 }
 
 .day-cell {
@@ -185,6 +187,8 @@ body {
   text-align: center;
   padding: 5px;
   border: 1px solid #000;
+  height: 6.4rem;
+  border-radius: 10px;
 }
 
 .day-cell:hover {
