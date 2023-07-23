@@ -46,7 +46,7 @@ function accountTabsGenerator() {
     button.addEventListener('click', () => {
       if (category.toLowerCase() === 'calendar') {
         calendarContainer.classList.remove('hidden');
-        var gridContainer = document.getElementById('grid-container');
+        let gridContainer = document.getElementById('grid-container');
         gridContainer.innerHTML = '';
       } else {
         handleCategoryClick(category.toLowerCase());

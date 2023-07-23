@@ -1,20 +1,20 @@
 import { handleClick } from '../modules/dinamicTap.js'
 
 function initializeBtns() {
-  var container = document.createElement('div');
+  let container = document.createElement('div');
   container.id = 'tab-container';
   document.body.appendChild(container);
 
   
-  var accountContainer = document.createElement('div');
+  let accountContainer = document.createElement('div');
   accountContainer.classList.add('account-container', 'position-right');
 
-  var accountLink = document.createElement('a');
+  let accountLink = document.createElement('a');
   accountLink.href = '../../account.html';
   accountLink.textContent = 'My Account';
   accountLink.classList.add('account-link'); 
 
-  var accountImage = document.createElement('img');
+  let accountImage = document.createElement('img');
   accountImage.src = '../../img/white-right-arrow.png'; 
   accountImage.alt = 'My Account';
   accountImage.classList.add('right-arrow'); 
@@ -24,20 +24,23 @@ function initializeBtns() {
 
   container.insertBefore(accountContainer, container.firstChild);
 
-  var eventCategories = ['Music', 'Sports', 'Business', 'Food', 'Art'];
+  let eventCategories = ['Music', 'Sports', 'Business', 'Food', 'Art'];
 
-  var handleCategoryClick = function (category) {
-    var buttons = container.getElementsByClassName('tab-button');
-    for (var i = 0; i < buttons.length; i++) {
+  let handleCategoryClick = function (category) {
+
+
+
+    let buttons = container.getElementsByClassName('tab-button');
+    for (let i = 0; i < buttons.length; i++) {
       buttons[i].classList.remove('default-tab-button');
     }
-    var selectedButton = document.getElementById(category);
+    let selectedButton = document.getElementById(category);
     selectedButton.classList.add('default-tab-button');
     handleClick(category.toLowerCase());
   };
 
   eventCategories.forEach(function (category) {
-    var button = document.createElement('button');
+    let button = document.createElement('button');
     button.id = category.toLowerCase();
     button.innerHTML = category;
     button.addEventListener('click', function () {
@@ -48,8 +51,8 @@ function initializeBtns() {
 
   container.classList.add('flex-container');
 
-  var buttons = container.getElementsByTagName('button');
-  for (var i = 0; i < buttons.length; i++) {
+  let buttons = container.getElementsByTagName('button');
+  for (let i = 0; i < buttons.length; i++) {
     buttons[i].classList.add('tab-button');
   }
 

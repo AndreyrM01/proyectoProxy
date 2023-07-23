@@ -1,9 +1,9 @@
 function addToLocalStorage(item, key) {
   try {
-    var items = localStorage.getItem(key);
-    var parsedItems = items ? JSON.parse(items) : [];
+    let items = localStorage.getItem(key);
+    let parsedItems = items ? JSON.parse(items) : [];
 
-    var itemExists = parsedItems.some(element => element.id === item.id);
+    let itemExists = parsedItems.some(element => element.id === item.id);
     if (!itemExists) {
       parsedItems.push(item);
       localStorage.setItem(key, JSON.stringify(parsedItems));
@@ -16,7 +16,7 @@ function addToLocalStorage(item, key) {
 
 function getLocalStorageItems(key) {
   try {
-    var items = localStorage.getItem(key);
+    let items = localStorage.getItem(key);
     return items ? JSON.parse(items) : [];
   } catch (error) {
     console.error('Error getting items from LocalStorage:', error);
