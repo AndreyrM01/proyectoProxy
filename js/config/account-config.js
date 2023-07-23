@@ -80,10 +80,12 @@ function accountTabsGenerator() {
 
   const previousButton = document.createElement('button');
   previousButton.innerHTML = 'Previous Month';
+  previousButton.classList.add('btn-calendar');
   calendarContainer.appendChild(previousButton);
 
   const nextButton = document.createElement('button');
   nextButton.innerHTML = 'Next Month';
+  nextButton.classList.add('btn-calendar');
   calendarContainer.appendChild(nextButton);
 
   const calendar = document.createElement('div');

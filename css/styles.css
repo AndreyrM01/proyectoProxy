@@ -175,6 +175,17 @@ body {
   gap: 10px;
 }
 
+.btn-calendar{
+  background-color: #000;
+  color: #fff;
+  height: 2rem;
+  border-radius: 7px;
+  position: relative;
+  left: 530px;
+  margin-left: 25px;
+  margin-bottom: 28px;
+}
+
 .empty-cell {
   background-color: transparent;
   border: 1px solid #000;
